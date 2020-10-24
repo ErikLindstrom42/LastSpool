@@ -1,6 +1,6 @@
-﻿using WisdomAndGrace.Models;
+﻿using LastSpool.Models;
 
-namespace WisdomAndGrace.Repositories
+namespace LastSpool.Repositories
 {
     public interface IUserProfileRepository
     {

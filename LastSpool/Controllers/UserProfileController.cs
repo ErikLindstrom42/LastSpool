@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WisdomAndGrace.Models;
-using WisdomAndGrace.Repositories;
+using LastSpool.Models;
+using LastSpool.Repositories;
 
-namespace WisdomAndGrace.Controllers
+namespace LastSpool.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -31,7 +31,7 @@ namespace WisdomAndGrace.Controllers
         public IActionResult Register(UserProfile userProfile)
         {
             // All newly registered users start out as a "user" user type (i.e. they are not admins)
-            userProfile.UserTypeId = UserType.USER_TYPE_ID;
+
             _userProfileRepository.Add(userProfile);
             return CreatedAtAction(
                 nameof(GetByFirebaseUserId), new { firebaseUserId = userProfile.FirebaseUserId }, userProfile);

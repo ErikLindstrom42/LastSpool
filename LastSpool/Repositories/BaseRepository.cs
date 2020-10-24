@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace WisdomAndGrace.Repositories
+namespace LastSpool.Repositories
 {
     public abstract class BaseRepository
     {
