@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WisdomAndGrace.Models
+namespace LastSpool.Models
 {
     public class UserProfile
     {
@@ -17,11 +17,6 @@ namespace WisdomAndGrace.Models
         [Required]
         [MaxLength(255)]
         public string Email { get; set; }
-
-        [Required]
-        public int UserTypeId { get; set; }
-
-        public UserType UserType { get; set; }
 
     }
 }

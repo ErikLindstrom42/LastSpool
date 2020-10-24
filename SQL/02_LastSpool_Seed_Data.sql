@@ -2,7 +2,7 @@
 GO
 
 SET IDENTITY_INSERT [UserProfile] ON
-INSERT INTO [UserProfile] (id, userName, email, [image], firebaseUserId)
+INSERT INTO [UserProfile] (id, name, email, [image], firebaseUserId)
 VALUES (1, 'Erik', 'test@gmail.com', 'html:blank', 'bMRKoGrZbYdrk8liei7a4ikju4o2');
 SET IDENTITY_INSERT [UserProfile] OFF
 

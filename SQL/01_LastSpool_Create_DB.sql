@@ -18,7 +18,7 @@ GO
 
 CREATE TABLE [UserProfile] (
   [id] integer PRIMARY KEY IDENTITY,
-  [userName] nvarchar(50),
+  [name] nvarchar(50),
   [email] nvarchar(255),
   [firebaseUserId] nvarchar(28),
   [image] nvarchar(255),
