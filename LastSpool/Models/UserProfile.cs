@@ -17,6 +17,5 @@ namespace LastSpool.Models
         [Required]
         [MaxLength(255)]
         public string Email { get; set; }
-
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LastSpool.Models;
 using LastSpool.Repositories;
+using System.Security.Claims;
 
 namespace LastSpool.Controllers
 {
@@ -35,6 +36,11 @@ namespace LastSpool.Controllers
             _userProfileRepository.Add(userProfile);
             return CreatedAtAction(
                 nameof(GetByFirebaseUserId), new { firebaseUserId = userProfile.FirebaseUserId }, userProfile);
+        }
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

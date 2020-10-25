@@ -1,25 +1,35 @@
 import React, { useState, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 
-export default function Login() {
+export default function Register() {
   const history = useHistory();
-  const { login } = useContext(UserProfileContext);
+  const { register } = useContext(UserProfileContext);
 
+  const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
-  const loginSubmit = (e) => {
+  const registerClick = (e) => {
     e.preventDefault();
-    login(email, password)
-      .then(() => history.push("/"))
-      .catch(() => alert("Invalid email or password"));
+    if (password && password !== confirmPassword) {
+      alert("Passwords don't match. Do better.");
+    } else {
+      const userProfile = { name, email };
+      register(userProfile, password)
+        .then(() => history.push("/"));
+    }
   };
 
   return (
-    <Form onSubmit={loginSubmit}>
+    <Form onSubmit={registerClick}>
       <fieldset>
+        <FormGroup>
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" type="text" onChange={e => setName(e.target.value)} />
+        </FormGroup>
         <FormGroup>
           <Label for="email">Email</Label>
           <Input id="email" type="text" onChange={e => setEmail(e.target.value)} />
@@ -29,11 +39,12 @@ export default function Login() {
           <Input id="password" type="password" onChange={e => setPassword(e.target.value)} />
         </FormGroup>
         <FormGroup>
-          <Button>Login</Button>
+          <Label for="confirmPassword">Confirm Password</Label>
+          <Input id="confirmPassword" type="password" onChange={e => setConfirmPassword(e.target.value)} />
         </FormGroup>
-        <em>
-          Not registered? <Link to="register">Register</Link>
-        </em>
+        <FormGroup>
+          <Button>Register</Button>
+        </FormGroup>
       </fieldset>
     </Form>
   );
