@@ -5,7 +5,7 @@ namespace LastSpool.Repositories
 {
     public interface IJobRepository
     {
-        void Add(Job job);
+        void Add(IncomingJob incomgingJob);
         void Delete(int id);
         Job GetJobById(int id);
         List<Job> GetJobsByPrinterId(int printerId);

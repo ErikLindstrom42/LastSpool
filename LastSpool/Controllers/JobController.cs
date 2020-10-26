@@ -18,10 +18,13 @@ namespace LastSpool.Controllers
     {
         private readonly IUserProfileRepository _userProfileRepository;
         private readonly IJobRepository _jobRepository;
-        public JobController(IJobRepository jobRepository, IUserProfileRepository userProfileRepository)
+        private readonly IPrinterRepository _printerRepository;
+        public JobController(IJobRepository jobRepository, IUserProfileRepository userProfileRepository, IPrinterRepository printerRepository)
+        //public JobController(IJobRepository jobRepository, IUserProfileRepository userProfileRepository)
         {
             _jobRepository = jobRepository;
             _userProfileRepository = userProfileRepository;
+            _printerRepository = printerRepository;
         }
 
         [HttpGet("{id}")]
@@ -50,8 +53,9 @@ namespace LastSpool.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Job job)
+        public IActionResult Add(IncomingJob job)
         {
+            job.PrinterId = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier).Id;
             _jobRepository.Add(job);
             return base.Created("", job);
 
