@@ -55,10 +55,9 @@ namespace LastSpool.Controllers
         [HttpPost]
         public IActionResult Add(IncomingJob job)
         {
-            job.PrinterId = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier).Id;
+            job.PrinterId = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier).Id;// add catch if not found
             _jobRepository.Add(job);
             return base.Created("", job);
-
         }
 
         private UserProfile GetCurrentUserProfile()

@@ -14,5 +14,6 @@ namespace LastSpool.Models
         public string Content { get; set; }
         public DateTime CreateDateTime { get; set; }
         public int JobId { get; set; }
+        public Job job { get; set; }
     }
 }
