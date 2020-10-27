@@ -21,7 +21,7 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength
+                        SELECT j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
                                 p.Name AS PrinterName, p.DeviceIdentifier, p.Description, p.UserProfileId
                         FROM Job j
                         LEFT JOIN Printer p ON j.PrinterId = p.Id
@@ -109,30 +109,10 @@ namespace LastSpool.Repositories
             }
         }
 
-        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
-        {
-            // Unix timestamp is seconds past epoch
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dtDateTime;
-        }
-        public void Add(IncomingJob incomingJob)
+
+        public void Add(Job job)
         {
 
-
-            Job job = new Job()
-            {
-                PrinterId = 1, // FIX THIS
-                Image = incomingJob.Image,
-                PercentDone = (int)incomingJob.PercentDone,
-                FileName = incomingJob.FileName,
-                TimeLeft = incomingJob.TimeLeft,
-                StatusDateTime = UnixTimeStampToDateTime(incomingJob.StatusTime),
-                FilamentLength = (int)incomingJob.FilamentLength,
-                PrintLength = (int)incomingJob.PrintLength,
-                DeviceIdentifier = incomingJob.DeviceIdentifier,
-                StatusMessage = incomingJob.StatusMessage
-            };
             using (var conn = Connection)
             {
                 conn.Open();
@@ -140,19 +120,20 @@ namespace LastSpool.Repositories
                 {
                     cmd.CommandText = @"
                         INSERT INTO Job
-                       (printerId, [Image], percentDone, fileName, timeLeft, statusTime, printLength, filamentLength, statusMessage, deviceIdentifier)
+                       (printerId, [Image], percentDone, fileName, timeLeft, statusTime, printLength, filamentLength, statusMessage, deviceIdentifier, completeDateTime)
                         OUTPUT INSERTED.id
-                        VALUES (@PrinterId, @Image, @PercentDone, @FileName, @TimeLeft, @StatusTime, @PrintLength, @FilamentLength, @StatusMessage, @DeviceIdentifier)";
+                        VALUES (@PrinterId, @Image, @PercentDone, @FileName, @TimeLeft, @StatusTime, @PrintLength, @FilamentLength, @StatusMessage, @DeviceIdentifier, @CompleteDateTime)";
                     DbUtils.AddParameter(cmd, "@PrinterId", job.PrinterId);
                     DbUtils.AddParameter(cmd, "@Image", job.Image);
                     DbUtils.AddParameter(cmd, "@PercentDone", job.PercentDone);
                     DbUtils.AddParameter(cmd, "@FileName", job.FileName);
                     DbUtils.AddParameter(cmd, "@TimeLeft", job.TimeLeft);
                     DbUtils.AddParameter(cmd, "@StatusTime", job.StatusDateTime);
-                    DbUtils.AddParameter(cmd, "@FilamentLength", job.FilamentLength);
                     DbUtils.AddParameter(cmd, "@PrintLength", job.PrintLength);
-                    DbUtils.AddParameter(cmd, "@DeviceIdentifier", job.DeviceIdentifier);
+                    DbUtils.AddParameter(cmd, "@FilamentLength", job.FilamentLength);
                     DbUtils.AddParameter(cmd, "@StatusMessage", job.StatusMessage);
+                    DbUtils.AddParameter(cmd, "@DeviceIdentifier", job.DeviceIdentifier);
+                    DbUtils.AddParameter(cmd, "@CompleteDateTime", job.CompleteDateTime);
                     job.Id = (int)cmd.ExecuteScalar();
                 }
             }
@@ -186,7 +167,6 @@ namespace LastSpool.Repositories
                     DbUtils.AddParameter(cmd, "@TimeLeft", job.TimeLeft);
                     DbUtils.AddParameter(cmd, "@StatusTime", job.StatusDateTime);
                     DbUtils.AddParameter(cmd, "@CompleteDateTime", job.CompleteDateTime);
-                    DbUtils.AddParameter(cmd, "@FilamentLength", job.FilamentLength);
                     DbUtils.AddParameter(cmd, "@PrintLength", job.PrintLength);
                     DbUtils.AddParameter(cmd, "@FilamentLength", job.FilamentLength);
                     DbUtils.AddParameter(cmd, "@StatusMessage", job.StatusMessage);

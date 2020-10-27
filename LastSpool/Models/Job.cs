@@ -15,7 +15,7 @@ namespace LastSpool.Models
         public int PercentDone { get; set; }
         [MaxLength(255)]
         public string FileName { get; set; }
-        public int TimeLeft { get; set; }
+        public int? TimeLeft { get; set; }
         [MaxLength(255)]
         public string StatusMessage { get; set; }
         public int PrintLength { get; set; }

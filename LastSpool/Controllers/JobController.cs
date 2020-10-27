@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Newtonsoft.Json.Linq;
+using LastSpool.Utils;
 
 namespace LastSpool.Controllers
 {
@@ -42,19 +43,41 @@ namespace LastSpool.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var currentUserProfile = GetCurrentUserProfile();
-            if (currentUserProfile.Id != _jobRepository.GetJobById(id).Id)
-            {
-                return Unauthorized();
-            }
+            //var currentUserProfile = GetCurrentUserProfile();
+            //if (currentUserProfile.Id != _jobRepository.GetJobById(id).Id)
+            //{
+            //    return Unauthorized();
+            //}
 
             _jobRepository.Delete(id);
             return NoContent();
         }
 
         [HttpPost]
-        public IActionResult Add(IncomingJob job)
+        public IActionResult Add(IncomingJob incomingJob)
         {
+            Job job = new Job()
+            {
+                
+                Image = incomingJob.Image,
+                FileName = incomingJob.FileName,
+                StatusDateTime = DbUtils.UnixTimeStampToDateTime(incomingJob.StatusTime),
+                FilamentLength = (int)incomingJob.FilamentLength,
+                PrintLength = (int)incomingJob.PrintLength,
+                DeviceIdentifier = incomingJob.DeviceIdentifier,
+                StatusMessage = incomingJob.StatusMessage,
+                CompleteDateTime = DateTime.Now
+            };
+            try
+            {
+                job.PercentDone = (int)incomingJob.PercentDone;
+            }
+            catch
+            {
+                job.PercentDone = 100;
+            }
+            job.TimeLeft = (incomingJob.TimeLeft == null) ? job.TimeLeft = 999 : job.TimeLeft = incomingJob.TimeLeft;
+            
             job.PrinterId = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier).Id;// add catch if not found
             _jobRepository.Add(job);
             return base.Created("", job);
@@ -66,6 +89,17 @@ namespace LastSpool.Controllers
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
 
 
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Job job)
+        {
+            if (id != job.Id)
+            {
+                return BadRequest();
+            }
+            _jobRepository.Update(job);
+            return Ok();
         }
     }
 }

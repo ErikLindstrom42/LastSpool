@@ -24,10 +24,34 @@ namespace LastSpool.Controllers
             return Ok(_printerRepository.GetPrinterByDeviceIdentifier(deviceIdentifier));
         }
 
+        [HttpPost]
+        public IActionResult Post(Printer printer)
+        {
+            if (_printerRepository.GetPrinterByDeviceIdentifier(printer.DeviceIdentifier) != null)
+            {
+                return BadRequest();
+            }
+            _printerRepository.Add(printer);
+            return base.Created("", printer);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetPrinterById(int id)
         {
             return Ok(_printerRepository.GetPrinterById(id));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            //var currentUserProfile = GetCurrentUserProfile();
+            //if (currentUserProfile.Id != _commentRepository.GetCommentById(id).UserProfileId || currentUserProfile.UserTypeId != 1)
+            //{
+            //    return Unauthorized();
+            //}
+
+            _printerRepository.Delete(id);
+            return NoContent();
         }
     }
 }

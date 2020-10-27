@@ -12,10 +12,10 @@ namespace LastSpool.Models
         public int PrinterId { get; set; }
         [MaxLength(255)]
         public string Image { get; set; }
-        public double PercentDone { get; set; }
+        public double? PercentDone { get; set; }
         [MaxLength(255)]
         public string FileName { get; set; }
-        public int TimeLeft { get; set; }
+        public int? TimeLeft { get; set; }
         [MaxLength(255)]
         public string StatusMessage { get; set; }
         public double PrintLength { get; set; }

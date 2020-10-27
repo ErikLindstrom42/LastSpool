@@ -31,6 +31,7 @@ namespace LastSpool
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IJobRepository, JobRepository>();
             services.AddTransient<IPrinterRepository, PrinterRepository>();
+            services.AddTransient<INoteRepository, NoteRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";

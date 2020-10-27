@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace LastSpool.Repositories
 {
-    public class NoteRepository : BaseRepository
+    public class NoteRepository : BaseRepository, INoteRepository
     {
         public NoteRepository(IConfiguration configuration) : base(configuration) { }
 
@@ -42,7 +42,7 @@ namespace LastSpool.Repositories
                             JobId = DbUtils.GetInt(reader, "JobId"),
                             Content = DbUtils.GetString(reader, "Content"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            
+
                         });
                     }
                     reader.Close();
@@ -50,7 +50,7 @@ namespace LastSpool.Repositories
                 }
             }
         }
-        
+
         public Note GetNoteById(int id)
 
         {
@@ -63,8 +63,8 @@ namespace LastSpool.Repositories
                         SELECT n.Id, n.Content, n.CreateDateTime, n.JobId, j.FileName
                         FROM Note n
                         LEFT JOIN Job j on n.JobId = j.Id
-                        WHERE Id = @Id
-                        ORDER BY CreateDateTime DESC;";
+                        WHERE n.Id = @Id
+                        ORDER BY n.CreateDateTime DESC;";
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     var reader = cmd.ExecuteReader();
@@ -93,22 +93,20 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                        INSERT INTO Comment (PostId, UserProfileId, Subject, Content, CreateDateTime)
+                                        INSERT INTO Note (JobId, Content, CreateDateTime)
                                         OUTPUT INSERTED.id
-                                        VALUES (@PostId, @UserProfileId, @Subject, @Content, @CreateDateTime);";
+                                        VALUES (@JobId, @Content, @CreateDateTime);";
 
-                    DbUtils.AddParameter(cmd, "@PostId", comment.PostId);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", comment.UserProfileId);
-                    DbUtils.AddParameter(cmd, "@Subject", comment.Subject);
-                    DbUtils.AddParameter(cmd, "@Content", comment.Content);
-                    DbUtils.AddParameter(cmd, "@CreateDateTime", comment.CreateDateTime);
-                    comment.Id = (int)cmd.ExecuteScalar();
+                    DbUtils.AddParameter(cmd, "@JobId", note.JobId);
+                    DbUtils.AddParameter(cmd, "@Content", note.Content);
+                    DbUtils.AddParameter(cmd, "@CreateDateTime", note.CreateDateTime);
+                    note.Id = (int)cmd.ExecuteScalar();
 
                 }
             }
         }
 
-        public void Update(Comment comment)
+        public void Update(Note note)
         {
             using (var conn = Connection)
             {
@@ -117,20 +115,16 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                        UPDATE Comment
-                                        SET PostId = @PostId,
-                                            UserProfileId = @UserProfileId,
-                                            Subject = @Subject,
+                                        UPDATE Note
+                                        SET JobId = @JobId,
                                             Content = @Content,
                                             CreateDateTime = @CreateDateTime
                                         WHERE Id = @Id;";
 
-                    DbUtils.AddParameter(cmd, "@PostId", comment.PostId);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", comment.UserProfileId);
-                    DbUtils.AddParameter(cmd, "@Subject", comment.Subject);
-                    DbUtils.AddParameter(cmd, "@Content", comment.Content);
-                    DbUtils.AddParameter(cmd, "@CreateDateTime", comment.CreateDateTime);
-                    DbUtils.AddParameter(cmd, "@Id", comment.Id);
+                    DbUtils.AddParameter(cmd, "@JobId", note.JobId);
+                    DbUtils.AddParameter(cmd, "@Content", note.Content);
+                    DbUtils.AddParameter(cmd, "@CreateDateTime", note.CreateDateTime);
+                    DbUtils.AddParameter(cmd, "@Id", note.Id);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -144,7 +138,7 @@ namespace LastSpool.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Comment WHERE Id = @Id";
+                    cmd.CommandText = "DELETE FROM Note WHERE Id = @Id";
                     DbUtils.AddParameter(cmd, "@id", id);
                     cmd.ExecuteNonQuery();
                 }

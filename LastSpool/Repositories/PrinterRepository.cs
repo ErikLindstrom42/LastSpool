@@ -75,6 +75,40 @@ namespace LastSpool.Repositories
                 }
             }
         }
+        public void Add(Printer printer)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                        INSERT INTO Printer (Name, UserProfileId, Description, DeviceIdentifier)
+                                        OUTPUT INSERTED.id
+                                        VALUES (@Name, @UserProfileId, @Description, @DeviceIdentifier);";
+
+                    DbUtils.AddParameter(cmd, "@Name", printer.Name);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", printer.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Description", printer.Description);
+                    DbUtils.AddParameter(cmd, "@DeviceIdentifier", printer.DeviceIdentifier);
+                    printer.Id = (int)cmd.ExecuteScalar();
+
+                }
+            }
+        }
+        public void Delete(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Printer WHERE Id = @Id";
+                    DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 
 }
