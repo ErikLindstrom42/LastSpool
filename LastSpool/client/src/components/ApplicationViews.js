@@ -14,11 +14,11 @@ export default function ApplicationViews() {
     <main>
       <Switch>
         <Route path="/" exact>
-          {/* {isLoggedIn ? <QuoteList /> : <Redirect to="/login" />} */}
+          {isLoggedIn ? <QuoteList /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/add">
-          {/* {isLoggedIn ? <QuoteAddForm /> : <Redirect to="/login" />} */}
+          {isLoggedIn ? <QuoteAddForm /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/login">

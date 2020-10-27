@@ -75,6 +75,38 @@ namespace LastSpool.Repositories
                 }
             }
         }
+
+        public List<Printer> GetPrintersByUserProfileId(int userProfileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, Name, DeviceIdentifier, Description, UserProfileId
+                        FROM Printer
+                        WHERE UserProfileId = @userProfileId";
+                    cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
+                    var reader = cmd.ExecuteReader();
+
+                    List<Printer> printers = new List<Printer>();
+                    while (reader.Read())
+                    {
+                        printers.Add(new Printer()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            Name = DbUtils.GetString(reader, "Name"),
+                            DeviceIdentifier = DbUtils.GetString(reader, "DeviceIdentifier"),
+                            Description = DbUtils.GetString(reader, "Description"),
+                            UserProfileId = DbUtils.GetInt(reader, "UserProfileId"),
+                        });
+                    }
+                    reader.Close();
+                    return printers;
+                }
+            }
+        }
         public void Add(Printer printer)
         {
             using (var conn = Connection)

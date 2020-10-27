@@ -1,4 +1,5 @@
 ﻿using LastSpool.Models;
+using System.Collections.Generic;
 
 namespace LastSpool.Repositories
 {
@@ -8,5 +9,6 @@ namespace LastSpool.Repositories
         void Delete(int id);
         Printer GetPrinterByDeviceIdentifier(string deviceIdentifier);
         Printer GetPrinterById(int id);
+        List<Printer> GetPrintersByUserProfileId(int userProfileId);
     }
 }
