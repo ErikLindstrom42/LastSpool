@@ -21,7 +21,6 @@ CREATE TABLE [UserProfile] (
   [name] nvarchar(50),
   [email] nvarchar(255),
   [firebaseUserId] nvarchar(28),
-  [image] nvarchar(255),
   CONSTRAINT UQ_firebaseUserId UNIQUE(firebaseUserId)
 )
 GO
@@ -36,8 +35,8 @@ CREATE TABLE [Printer] (
 GO
 
 CREATE TABLE [Job] (
-  [id] integer IDENTITY PRIMARY KEY NOT NULL,
-  [printerId] integer NOT NULL,
+  [id] integer IDENTITY PRIMARY KEY,
+  [printerId] integer,
   [image] nvarchar(255),
   [percentDone] integer,
   [fileName] nvarchar(255),
@@ -46,6 +45,7 @@ CREATE TABLE [Job] (
   [statusMessage] nvarchar(255),
   [completeDateTime] datetime,
   [printLength] integer,
+  [deviceIdentifier] nvarchar(255),
   [filamentLength] integer,
   CONSTRAINT FK_Job_Printer FOREIGN KEY (printerId) REFERENCES Printer(id)
 )
@@ -60,13 +60,4 @@ CREATE TABLE [Note] (
   CONSTRAINT FK_Note_Job FOREIGN KEY (jobId) REFERENCES Job(id)
 )
 GO
-
---ALTER TABLE [Printer] ADD FOREIGN KEY ([userProfileId]) REFERENCES [UserProfile] ([id])
---GO
-
---ALTER TABLE [Job] ADD FOREIGN KEY ([printerId]) REFERENCES [Printer] ([id])
---GO
-
---ALTER TABLE [Note] ADD FOREIGN KEY ([jobId]) REFERENCES [Job] ([id])
---GO
 

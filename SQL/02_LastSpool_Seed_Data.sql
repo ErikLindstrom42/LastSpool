@@ -2,18 +2,18 @@
 GO
 
 SET IDENTITY_INSERT [UserProfile] ON
-INSERT INTO [UserProfile] (id, name, email, [image], firebaseUserId)
-VALUES (1, 'Erik', 'test@gmail.com', 'html:blank', 'bMRKoGrZbYdrk8liei7a4ikju4o2');
+INSERT INTO [UserProfile] (id, name, email, firebaseUserId)
+VALUES (1, 'Erik', 'test@gmail.com', 'bMRKoGrZbYdrk8liei7a4ikju4o2');
 SET IDENTITY_INSERT [UserProfile] OFF
 
 SET IDENTITY_INSERT [Printer] ON
 INSERT INTO [Printer] (id, [name], [description], deviceIdentifier, userProfileId)
-VALUES (1, 'ender3', 'slightly modified CR Ender3', 'Printer1', 1)
+VALUES (1, 'ender3', 'slightly modified CR Ender3', 'Printer1', 1),(2, 'Mk3', 'Stock Prusa', 'Printer2', 1)
 SET IDENTITY_INSERT [Printer] OFF
 
 SET IDENTITY_INSERT [Job] ON
-INSERT INTO [Job] (id, printerId, [image], percentDone, fileName, timeLeft, statusTime, completeDateTime, printLength, filamentLength, statusMessage)
-VALUES (1, 1, 'html:blank', 100,'first.gcode', 0, '2020-06-17', '2020-06-17', 5000, 100, 'status here')
+INSERT INTO [Job] (id, printerId, [image], percentDone, fileName, timeLeft, statusTime, completeDateTime, printLength, filamentLength, statusMessage, deviceIdentifier)
+VALUES (1, 1, 'html:blank', 100,'first.gcode', 0, '2020-06-17', '2020-06-17', 5000, 100, 'status here', 'Printer1')
 SET IDENTITY_INSERT [Job] OFF
 
 SET IDENTITY_INSERT [Note] ON
