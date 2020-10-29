@@ -56,6 +56,7 @@ namespace LastSpool.Controllers
         [HttpPost]
         public IActionResult Add(IncomingJob incomingJob)
         {
+            //Job lastJob = GetLastJob();
             Job job = new Job()
             {
                 
@@ -79,6 +80,7 @@ namespace LastSpool.Controllers
             job.TimeLeft = (incomingJob.TimeLeft == null) ? job.TimeLeft = 999 : job.TimeLeft = incomingJob.TimeLeft;
             
             job.PrinterId = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier).Id;// add catch if not found
+            
             _jobRepository.Add(job);
             return base.Created("", job);
         }
@@ -100,6 +102,32 @@ namespace LastSpool.Controllers
             }
             _jobRepository.Update(job);
             return Ok();
+        }
+
+   
+        [HttpGet("GetLastJob")]
+        public IActionResult GetLastJob()
+        {
+            
+            return Ok(_jobRepository.GetLastJob());
+
+        }
+
+
+        [HttpGet("GetLastUserJob")]
+        public IActionResult GetLastUserJob()
+        {
+            var currentUser = GetCurrentUserProfile();
+            return Ok(_jobRepository.GetLastUserJob(currentUser.Id));
+            
+        }
+
+        [HttpGet("GetLastPrinterJob/{id}")]
+        public IActionResult GetLastPrinterJob(int id)
+        {
+
+            return Ok(_jobRepository.GetLastPrinterJob(id));
+
         }
     }
 }

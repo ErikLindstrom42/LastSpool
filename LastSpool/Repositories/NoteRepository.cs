@@ -24,9 +24,10 @@ namespace LastSpool.Repositories
                 {
 
                     cmd.CommandText = @"
-                        SELECT n.Id, n.Content, n.CreateDateTime, n.JobId, j.FileName
+                        SELECT n.Id, n.Content, n.CreateDateTime, n.JobId, j.FileName, j.PrinterId, p.UserProfileId
                         FROM Note n
                         LEFT JOIN Job j on n.JobId = j.Id
+                        LEFT JOIN Printer p on j.printerId = p.Id
                         WHERE JobId = @JobId
                         ORDER BY CreateDateTime DESC;";
                     cmd.Parameters.AddWithValue("@JobId", jobId);
@@ -42,6 +43,17 @@ namespace LastSpool.Repositories
                             JobId = DbUtils.GetInt(reader, "JobId"),
                             Content = DbUtils.GetString(reader, "Content"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                            Job = new Job()
+                            {
+                                FileName = DbUtils.GetString(reader, "FileName"),
+                                PrinterId = DbUtils.GetInt(reader, "PrinterId"),
+                                Printer = new Printer()
+                                {
+                                    UserProfileId = DbUtils.GetInt(reader, "UserProfileId")
+                                }
+
+                            }
+
 
                         });
                     }

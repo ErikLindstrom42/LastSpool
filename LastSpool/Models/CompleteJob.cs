@@ -1,11 +1,12 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LastSpool.Models
 {
-    public class Job
+    public class CompleteJob
     {
         public int Id { get; set; }
         public int PrinterId { get; set; }
@@ -22,7 +23,7 @@ namespace LastSpool.Models
         public DateTime StatusDateTime { get; set; }
         public DateTime CompleteDateTime { get; set; }
         public string DeviceIdentifier { get; set; }
-        
+
         public Printer Printer { get; set; }
         public UserProfile UserProfile { get; set; }
     }

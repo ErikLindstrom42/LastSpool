@@ -3,22 +3,29 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { UserProfileContext } from "../providers/UserProfileProvider";
 import Login from "./Login";
 import Register from "./Register";
-// import QuoteList from "./QuoteList";
-// import QuoteAddForm from "./QuoteAddForm";
+import PrinterList from "./Printer/PrinterList";
+import PrinterForm from "./Printer/PrinterForm";
+// import PrinterEditForm from "./Printer/PrinterEditForm";
+// import PrinterDetails from "./Printer/PrinterDetails";
+import JobList from "./Job/JobList";
+import JobForm from "./Job/JobForm";
+// import JobEditForm from "./Job/JobEditForm";
+// import JobDetails from "./Job/JobDetails";
+import NoteList from "./Note/NoteList";
+// import NoteForm from "./Note/NoteForm";
+// import NoteEditForm from "./Note/NoteEditForm";
+import NoteDetails from "./Note/NoteDetails";
+
 
 export default function ApplicationViews() {
   const { isLoggedIn } = useContext(UserProfileContext);
-  
+
 
   return (
     <main>
       <Switch>
         <Route path="/" exact>
-          {isLoggedIn ? <QuoteList /> : <Redirect to="/login" />}
-        </Route>
-
-        <Route path="/add">
-          {isLoggedIn ? <QuoteAddForm /> : <Redirect to="/login" />}
+          {isLoggedIn ? <PrinterList /> : <Redirect to="/login" />}
         </Route>
 
         <Route path="/login">
@@ -28,6 +35,23 @@ export default function ApplicationViews() {
         <Route path="/register">
           <Register />
         </Route>
+
+        <Route path="/printers/:printerId/jobs/new">
+          {isLoggedIn ? <JobForm /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/printers/:printerId/jobs/:jobId/notes">
+          {isLoggedIn ? <NoteList /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/printers/new">
+          {isLoggedIn ? <PrinterForm /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/printers/:printerId">
+          {isLoggedIn ? <JobList /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/printers/:printerId/jobs/:jobId/notes/:noteId">
+          {isLoggedIn ? <NoteDetails/> : <Redirect to="/login" />}
+        </Route>
+
       </Switch>
     </main>
   );

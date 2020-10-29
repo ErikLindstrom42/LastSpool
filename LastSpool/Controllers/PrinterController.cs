@@ -24,10 +24,10 @@ namespace LastSpool.Controllers
             return Ok(_printerRepository.GetPrinterByDeviceIdentifier(deviceIdentifier));
         }
 
-        [HttpGet("getprinterbyuserprofileid/{id}")]
-        public IActionResult GetPrinterByUserProfileId(string deviceIdentifier)
+        [HttpGet("getprintersbyuserprofileid/{id}")]
+        public IActionResult GetPrintersByUserProfileId(int id)
         {
-            return Ok(_printerRepository.GetPrinterByDeviceIdentifier(deviceIdentifier));
+            return Ok(_printerRepository.GetPrintersByUserProfileId(id));
         }
 
         [HttpPost]
