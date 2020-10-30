@@ -16,6 +16,7 @@ const Job = ({ job }) => {
                     <div>{job.filamentLength}</div>
                     <img src={job.image} alt="job image" />
                     <div>{job.printer.name}</div>
+                    
 
                     <div className="jobTextArea">{job.content}</div>
                     <div>

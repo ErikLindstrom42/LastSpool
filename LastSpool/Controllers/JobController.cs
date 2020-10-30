@@ -90,6 +90,14 @@ namespace LastSpool.Controllers
             return base.Created("", job);
             
         }
+        [HttpPost("ManualAdd")]
+        public IActionResult ManualAdd(Job job)
+        {
+
+            _jobRepository.Add(job);
+            return base.Created("", job);
+
+        }
 
         private UserProfile GetCurrentUserProfile()
         {

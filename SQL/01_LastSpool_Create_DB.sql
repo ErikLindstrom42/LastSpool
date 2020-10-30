@@ -41,7 +41,7 @@ CREATE TABLE [Job] (
   [percentDone] integer,
   [fileName] nvarchar(255),
   [timeLeft] integer,
-  [statusTime] datetime,
+  [statusDateTime] datetime,
   [statusMessage] nvarchar(255),
   [completeDateTime] datetime,
   [printLength] integer,

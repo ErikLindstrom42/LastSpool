@@ -9,13 +9,15 @@ import PrinterForm from "./Printer/PrinterForm";
 // import PrinterDetails from "./Printer/PrinterDetails";
 import JobList from "./Job/JobList";
 import JobForm from "./Job/JobForm";
-// import JobEditForm from "./Job/JobEditForm";
+import JobDelete from "./Job/JobDelete";
+import JobEditForm from "./Job/JobEditForm";
 import JobDetails from "./Job/JobDetails";
 import NoteList from "./Note/NoteList";
 import NoteDelete from "./Note/NoteDelete";
-// import NoteForm from "./Note/NoteForm";
-import NoteEditForm from "./Note/NoteEditForm";
-import NoteDetails from "./Note/NoteDetails";
+
+
+
+
 
 
 export default function ApplicationViews() {
@@ -43,12 +45,21 @@ export default function ApplicationViews() {
         <Route path="/printers/:printerId/jobs/:jobId/details">
           {isLoggedIn ? <JobDetails /> : <Redirect to="/login" />}
         </Route>
+        <Route path="/printers/:printerId/jobs/:jobId/edit">
+          {isLoggedIn ? <JobEditForm /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/printers/:printerId/jobs/:jobId/delete">
+          {isLoggedIn ? <JobDelete /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/printers/:printerId/jobs/new">
+          {isLoggedIn ? <JobForm /> : <Redirect to="/login" />}
+        </Route>
         <Route path="/printers/:printerId/jobs/:jobId/notes/:noteId/delete">
           {isLoggedIn ? <NoteDelete/> : <Redirect to="/login" />}
         </Route>
-        <Route path="/printers/:printerId/jobs/:jobId/notes/:noteId/edit">
+        {/* <Route path="/printers/:printerId/jobs/:jobId/notes/:noteId/edit">
           {isLoggedIn ? <NoteEditForm/> : <Redirect to="/login" />}
-        </Route>
+        </Route> */}
         <Route path="/printers/:printerId/jobs/:jobId/notes">
           {isLoggedIn ? <NoteList /> : <Redirect to="/login" />}
         </Route>

@@ -11,13 +11,15 @@ const JobDetails = () => {
     const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
     const { printerId, jobId } = useParams();
 
-    const { getJobById, job } = useContext(JobContext)
+    const { getJobById } = useContext(JobContext)
+    const [job, setJob] = useState();
     
     useEffect(() => {
-        getJobById(jobId);
+        getJobById(jobId).then(setJob);
     }, []);
 
-    if(job.printer=== undefined) return null;
+    if (!job) return null
+
 
     return (
     <>
@@ -28,10 +30,11 @@ const JobDetails = () => {
                     <div>{job.filamentLength}</div>
                     <img src={job.image} alt="job image" />
                     <div>{job.name}</div>
-                    {/* <p><Link to={`/printers/${printerId}/jobs/${job.id}`}>More</Link></p> */}
-                    <p><Link to={`/printers/${printerId}`}>
+                    <div>Completed on: {job.completeDateTime}</div>
+
+                    <Link to={`/printers/${printerId}`}>
                         <Button>Back</Button>
-                    </Link></p>
+                    </Link>
 
                     {(currentUserId === job.printer.userProfileId) && (jobId) ?
                         <Link to={`/printers/${printerId}/jobs/${job.id}/delete`}>

@@ -12,7 +12,7 @@ VALUES (1, 'ender3', 'slightly modified CR Ender3', 'Printer1', 1),(2, 'Mk3', 'S
 SET IDENTITY_INSERT [Printer] OFF
 
 SET IDENTITY_INSERT [Job] ON
-INSERT INTO [Job] (id, printerId, [image], percentDone, fileName, timeLeft, statusTime, completeDateTime, printLength, filamentLength, statusMessage, deviceIdentifier)
+INSERT INTO [Job] (id, printerId, [image], percentDone, fileName, timeLeft, statusDateTime, completeDateTime, printLength, filamentLength, statusMessage, deviceIdentifier)
 VALUES (1, 1, 'html:blank', 100,'first.gcode', 0, '2020-06-17', '2020-06-17', 5000, 100, 'status here', 'Printer1')
 SET IDENTITY_INSERT [Job] OFF
 

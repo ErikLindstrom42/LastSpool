@@ -1,54 +1,55 @@
 import "./Job.css"
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, Link, useParams } from "react-router-dom"
 import { Button, Card, CardBody, Form, FormGroup, Label, Input } from "reactstrap";
 import { JobContext } from "../../providers/JobProvider";
-import { PrinterContext } from "../../providers/PrinterProvider";
-import Job from "./Job";
 
 const JobForm = () => {
 
     const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
-    const { printerId } = useParams();
+    const { printerId, jobId } = useParams();
+    const { addJob } = useContext(JobContext);
     const history = useHistory();
-    const { jobs, addJob } = useContext(JobContext);
-    const { printers, getPrintersByUserProfileId} = useContext(PrinterContext)
-    const user = JSON.parse(sessionStorage.getItem("userProfile")).id
+
     const [image, setImage] = useState();
     const [fileName, setFileName] = useState();
-    const [statusTime, setStatusTime] = useState();
+    const [statusDateTime, setStatusDateTime] = useState();
     const [completeDateTime, setCompleteDateTime] = useState();
     const [deviceIdentifier, setDeviceIdentifier] = useState();
     const [filamentLength, setFilamentLength] = useState();
+    const [job, setJob] = useState({
+        printerId: "", deviceIdentifier: "", percentDone: 100, timeLeft: 0, statusMessage: "Your print is done.",
+        printLength: 0, completeDateTime: "", fileName: "", image: "", statusDateTime: "", filamentLength: ""
+    });
 
-    console.log(printerId)
+
+    console.log(job.filamentLength)
+    const handleFieldChange = evt => {
+
+        const stateToChange = { ...job }
+        stateToChange[evt.target.id] = evt.target.value
+        setJob(stateToChange)
+
+    }
+
     const submit = (e) => {
         e.preventDefault();
         const newJob = {
-            printerId: printerId,
+            id: job.id,
+            printerId: parseInt(printerId),
+            deviceIdentifier: job.deviceIdentifier,
             percentDone: 100,
             timeLeft: 0,
             statusMessage: "Your print is done.",
             printLength: 0,
-            completeDateTime,
-            deviceIdentifier,
-            fileName,
-            image,
-            statusTime,
-            filamentLength
+            completeDateTime: job.completeDateTime,
+            fileName: job.fileName,
+            image: job.image,
+            statusDateTime: job.statusDateTime,
+            filamentLength: parseInt(job.filamentLength)
         }
-        newJob.statusTime = completeDateTime;
-        const mappedJob = {
-            printerId: parseInt(newJob.printerId),
-            percentDone: newJob.percentDone,
-            timeLeft: newJob.timeLeft,
-            statusMessage: newJob.statusMessage,
-            filamentLength: parseInt(newJob.filamentLength)
-
-        }
-        
-
-        addJob(mappedJob).then((evt) => history.pushState(`/printers/${printerId}`))
+        newJob.statusDateTime = newJob.completeDateTime
+        addJob(newJob).then((evt) => history.push(`/printers/${printerId}/jobs/`))
 
     }
 
@@ -60,27 +61,34 @@ const JobForm = () => {
                     <CardBody>
                         <Form>
                             <FormGroup>
-                                <Label for="printerId">New Job</Label>
-                                <Input type="hidden"
-                                    id="printerId"
-                                    value={printerId}
 
-                                />
+                                <Label for="printerId">Edit Job</Label>
+                                {/* <Input type="hidden"
+                                    id="printerId"
+                                    value={job.printerId}
+
+                                /> */}
                             </FormGroup>
                             <FormGroup>
                                 <Label for="fileName">Name</Label>
-                                <Input id="fileName" onChange={(e) => setFileName(e.target.value)} />
+                                <Input id="fileName"  onChange={handleFieldChange} />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="completeDateTime">Completed On</Label>
-                                <Input type="date" id="completeDateTime" onChange={(e) => setCompleteDateTime(e.target.value)} />
+                                <Input type="datetime" id="completeDateTime" onChange={handleFieldChange} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="filamentLength">Filament Length (mm)</Label>
+                                <Input id="filamentLength" onChange={handleFieldChange} />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="image">Image</Label>
-                                <Input id="image" onChange={(e) => setImage(e.target.value)} />
-                                <Label for="filamentLength">Filament Used (mm)</Label>
-                                <Input id="filamentLength" onChange={(e) => setFilamentLength(e.target.value)} />
+                                <Input id="image"  onChange={handleFieldChange} />
                             </FormGroup>
+                            {/* <FormGroup>
+                                <Label for="deviceIdentifier">Device Identifier</Label>
+                                <Input id="deviceIdentifier" onChange={(e) => setFileName(e.target.value)} />
+                            </FormGroup> */}
                         </Form>
                         <Button color="info" onClick={submit} className="commentButton">
                             Submit

@@ -29,11 +29,11 @@ export const JobProvider = (props) => {
                     "Content-type": "application/json"
                 }
             }).then(resp => resp.json())
-                .then(setJob));
+                );
 //
     const addJob = (job) =>
         getToken().then((token) =>
-            fetch(apiUrl, {
+            fetch(`${apiUrl}/manualadd`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,

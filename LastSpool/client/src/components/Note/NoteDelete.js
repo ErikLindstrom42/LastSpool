@@ -24,7 +24,6 @@ const NoteDelete = () => {
 
     if (!note) return null;
     const publishDate = new Date(note.createDateTime)
-    console.log(note.id)
         const HumanPublishDate = `${publishDate.getMonth() + 1}/${publishDate.getDate()}/${publishDate.getFullYear()}`
 
     return (
