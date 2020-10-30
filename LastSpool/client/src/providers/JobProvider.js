@@ -19,7 +19,18 @@ export const JobProvider = (props) => {
                 }
             }).then(resp => resp.json())
                 .then(setJobs));
-
+//
+    const getJobById = (id) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-type": "application/json"
+                }
+            }).then(resp => resp.json())
+                .then(setJob));
+//
     const addJob = (job) =>
         getToken().then((token) =>
             fetch(apiUrl, {
@@ -67,14 +78,14 @@ export const JobProvider = (props) => {
                     "Content-Type": "application/json"
                 }
             }));
-    const getJobById = (id) =>
-        getToken().then((token) =>
-            fetch(`${apiUrl}/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+    // const getJobById = (id) =>
+    //     getToken().then((token) =>
+    //         fetch(`${apiUrl}/${id}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
 
-                }
-            }).then((res) => res.json()));
+    //             }
+    //         }).then((res) => res.json()));
 
 
 

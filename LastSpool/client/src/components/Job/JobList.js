@@ -15,7 +15,7 @@ const JobList = () => {
 
     return (
         <>
-            <p><Link to={`/printers/${printerId}/jobs/new`}>New Job</Link></p>
+            {/* <p><Link to={`/printers/${printerId}/jobs/new`}>New Job</Link></p> */}
 
             <div className="container">
                 <div className="row justify-content-center">

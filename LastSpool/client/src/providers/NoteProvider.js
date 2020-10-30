@@ -35,13 +35,31 @@ export const NoteProvider = (props) => {
                 throw new Error("Unauthorized");
             }));
 
+    const getNoteById = (id) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
 
+                }
+            }).then((res) => res.json()));
+
+
+            const deleteNote = (id) =>
+            getToken().then((token) =>
+                fetch(`${apiUrl}/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                }));
 
 
 
 
     return (
-        <NoteContext.Provider value={{ notes, getNotesByJobId, addNote }}>
+        <NoteContext.Provider value={{ notes, getNotesByJobId, addNote, getNoteById, deleteNote }}>
             {props.children}
         </NoteContext.Provider>
     );

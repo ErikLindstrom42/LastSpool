@@ -6,7 +6,7 @@ import { Button, Card, CardBody } from "reactstrap";
 const Job = ({ job }) => {
 
     const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
-    const { printerId } = useParams();
+    const { printerId, jobId } = useParams();
 
     return (
         <Card style={{ border: "none" }}>
@@ -14,25 +14,26 @@ const Job = ({ job }) => {
                 <CardBody>
                     <strong>{job.fileName}</strong>
                     <div>{job.filamentLength}</div>
-                    <img src={job.image} alt="job image"/>
+                    <img src={job.image} alt="job image" />
                     <div>{job.printer.name}</div>
-                        
-                    
-                    <p><Link to={`/printers/${printerId}/jobs/${job.id}/notes`}>More</Link></p>
+
                     <div className="jobTextArea">{job.content}</div>
                     <div>
-                    {(currentUserId === job.printer.userProfileId) ?
-                        <Link to={`/printers/${printerId}/jobs/${job.id}/delete`}>
-                            <Button color="danger" className="jobButton">Delete</Button>
+                        <Link to={`/printers/${printerId}/jobs/${job.id}/details`}>
+                            <Button>Details</Button>
                         </Link>
-                        : <div></div>}
+                        {(currentUserId === job.printer.userProfileId) && (jobId) ?
+                            <Link to={`/printers/${printerId}/jobs/${job.id}/delete`}>
+                                <Button color="danger" className="jobButton">Delete</Button>
+                            </Link>
+                            : <div></div>}
 
-                    {(currentUserId === job.printer.userProfileId) ?
-                        <Link to={`/printers/${printerId}/jobs/${job.id}/edit`}>
-                            <Button className="jobButton">Edit</Button>
-                        </Link>
-                        : <div></div>}
-                </div>
+                        {(currentUserId === job.printer.userProfileId && (jobId)) ?
+                            <Link to={`/printers/${printerId}/jobs/${job.id}/edit`}>
+                                <Button className="jobButton">Edit</Button>
+                            </Link>
+                            : <div></div>}
+                    </div>
                 </CardBody>
             </div>
         </Card>

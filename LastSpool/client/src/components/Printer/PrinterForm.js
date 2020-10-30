@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Button, Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
 import { useHistory, useParams, Link } from "react-router-dom"
 import { PrinterContext } from "../../providers/PrinterProvider";
@@ -9,7 +9,7 @@ const PrinterForm = () => {
 
     const { addPrinter } = useContext(PrinterContext);
     const user = JSON.parse(sessionStorage.getItem("userProfile")).id
-    
+    const { printers, getPrintersByUserProfileId } = useContext(PrinterContext);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [deviceIdentifier, setDeviceIdentifier] = useState("");
@@ -32,6 +32,12 @@ const PrinterForm = () => {
             history.push(`/`);
         });
     };
+    // useEffect(() => {
+    //     getPrintersByUserProfileId(user)
+    // },[])
+    // let printerList = printers.map((printer) =>
+    //     <option key={printer.id} value={printer.id}>printer{printer.id}</option> )
+
 
     return (
         <div className="container pt-4">
@@ -72,6 +78,11 @@ const PrinterForm = () => {
                                 <Label for="deviceIdentifier">Device Identifier</Label>
                                 <Input id="deviceIdentifier" onChange={(e) => setDeviceIdentifier(e.target.value)} />
                             </FormGroup>
+                            {/* <FormGroup>
+                                <select
+                                onChange={(e) => setDeviceIdentifier(e.target.value)} 
+                                id="deviceIdentifier"/>
+                            </FormGroup> */}
                             
                         </Form>
                         <Button color="info" onClick={submit} className="commentButton">

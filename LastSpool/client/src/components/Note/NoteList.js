@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { NoteContext } from "../../providers/NoteProvider";
 import Note from "./Note";
 import { useParams, useHistory, Link } from 'react-router-dom';
+import NoteForm from "./NoteForm";
 
 
 
@@ -17,10 +18,11 @@ const NoteList = () => {
 
     return (
         <>
-            <p><Link to={`/printers/new`}>New Printerrrrrrr</Link></p>
+            <p><Link to={`/printers/${printerId}/jobs/${jobId}/notes/new`}>New Note</Link></p>
 
             <div className="container">
                 <div className="row justify-content-center">
+                    <NoteForm />
                     <div className="cards-column">
                         {notes.map((note) =>
                             <Note key={note.id} note={note}

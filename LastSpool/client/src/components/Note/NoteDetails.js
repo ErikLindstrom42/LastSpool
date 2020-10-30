@@ -38,10 +38,6 @@ const NoteDetails = ({ note }) => {
             </div>
         </Card>
     )
-
-
-
-
 }
 
 export default NoteDetails;

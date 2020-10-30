@@ -1,8 +1,10 @@
 import "./Job.css"
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useHistory, Link, useParams } from "react-router-dom"
 import { Button, Card, CardBody, Form, FormGroup, Label, Input } from "reactstrap";
 import { JobContext } from "../../providers/JobProvider";
+import { PrinterContext } from "../../providers/PrinterProvider";
+import Job from "./Job";
 
 const JobForm = () => {
 
@@ -10,6 +12,7 @@ const JobForm = () => {
     const { printerId } = useParams();
     const history = useHistory();
     const { jobs, addJob } = useContext(JobContext);
+    const { printers, getPrintersByUserProfileId} = useContext(PrinterContext)
     const user = JSON.parse(sessionStorage.getItem("userProfile")).id
     const [image, setImage] = useState();
     const [fileName, setFileName] = useState();
@@ -35,10 +38,20 @@ const JobForm = () => {
             filamentLength
         }
         newJob.statusTime = completeDateTime;
+        const mappedJob = {
+            printerId: parseInt(newJob.printerId),
+            percentDone: newJob.percentDone,
+            timeLeft: newJob.timeLeft,
+            statusMessage: newJob.statusMessage,
+            filamentLength: parseInt(newJob.filamentLength)
 
-        addJob(newJob).then((evt) => history.pushState(`/printers/${printerId}`))
+        }
+        
+
+        addJob(mappedJob).then((evt) => history.pushState(`/printers/${printerId}`))
 
     }
+
 
     return (
         <div className="container pt-4">
@@ -60,18 +73,12 @@ const JobForm = () => {
                             </FormGroup>
                             <FormGroup>
                                 <Label for="completeDateTime">Completed On</Label>
-                                <Input type="datetime" id="completeDateTime" onChange={(e) => setCompleteDateTime(e.target.value)} />
+                                <Input type="date" id="completeDateTime" onChange={(e) => setCompleteDateTime(e.target.value)} />
                             </FormGroup>
                             <FormGroup>
                                 <Label for="image">Image</Label>
                                 <Input id="image" onChange={(e) => setImage(e.target.value)} />
-                            </FormGroup>
-                            {/* <FormGroup>
-                                <Label for="deviceIdentifier">Device Identifier</Label>
-                                <Input id="deviceIdentifier" onChange={(e) => setFileName(e.target.value)} />
-                            </FormGroup> */}
-                            <FormGroup>
-                                <Label for="filamentLength">Name</Label>
+                                <Label for="filamentLength">Filament Used (mm)</Label>
                                 <Input id="filamentLength" onChange={(e) => setFilamentLength(e.target.value)} />
                             </FormGroup>
                         </Form>

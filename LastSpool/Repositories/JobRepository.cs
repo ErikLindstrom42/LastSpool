@@ -38,14 +38,14 @@ namespace LastSpool.Repositories
                             Id = DbUtils.GetInt(reader, "Id"),
                             PrinterId = DbUtils.GetInt(reader, "PrinterId"),
                             Image = DbUtils.GetString(reader, "Image"),
-                            PercentDone = DbUtils.GetInt(reader, "PercentDone"),
+                            PercentDone = DbUtils.GetNullableInt(reader, "PercentDone"),
                             FileName = DbUtils.GetString(reader, "FileName"),
-                            TimeLeft = DbUtils.GetInt(reader, "TimeLeft"),
+                            TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
                             StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
-                            CompleteDateTime = DbUtils.GetDateTime(reader, "CompleteDateTime"),
+                            CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
                             Printer = new Printer()
                             {
                                 Id = DbUtils.GetInt(reader, "PrinterId"),
@@ -86,14 +86,14 @@ namespace LastSpool.Repositories
                             Id = DbUtils.GetInt(reader, "Id"),
                             PrinterId = DbUtils.GetInt(reader, "PrinterId"),
                             Image = DbUtils.GetString(reader, "Image"),
-                            PercentDone = DbUtils.GetInt(reader, "PercentDone"),
+                            PercentDone = DbUtils.GetNullableInt(reader, "PercentDone"),
                             FileName = DbUtils.GetString(reader, "FileName"),
-                            TimeLeft = DbUtils.GetInt(reader, "TimeLeft"),
+                            TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
                             StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
-                            CompleteDateTime = DbUtils.GetDateTime(reader, "CompleteDateTime"),
+                            CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
                             Printer = new Printer()
                             {
                                 Id = DbUtils.GetInt(reader, "PrinterId"),
@@ -218,14 +218,14 @@ namespace LastSpool.Repositories
                             Id = DbUtils.GetInt(reader, "Id"),
                             PrinterId = DbUtils.GetInt(reader, "PrinterId"),
                             Image = DbUtils.GetString(reader, "Image"),
-                            PercentDone = DbUtils.GetInt(reader, "PercentDone"),
+                            PercentDone = DbUtils.GetNullableInt(reader, "PercentDone"),
                             FileName = DbUtils.GetString(reader, "FileName"),
-                            TimeLeft = DbUtils.GetInt(reader, "TimeLeft"),
+                            TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
                             StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
-                            CompleteDateTime = DbUtils.GetDateTime(reader, "CompleteDateTime"),
+                            CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime")
 
                         };
                     }
@@ -260,14 +260,14 @@ namespace LastSpool.Repositories
                             Id = DbUtils.GetInt(reader, "Id"),
                             PrinterId = DbUtils.GetInt(reader, "PrinterId"),
                             Image = DbUtils.GetString(reader, "Image"),
-                            PercentDone = DbUtils.GetInt(reader, "PercentDone"),
+                            PercentDone = DbUtils.GetNullableInt(reader, "PercentDone"),
                             FileName = DbUtils.GetString(reader, "FileName"),
-                            TimeLeft = DbUtils.GetInt(reader, "TimeLeft"),
+                            TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
                             StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
-                            CompleteDateTime = DbUtils.GetDateTime(reader, "CompleteDateTime"),
+                            CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
 
                         };
                     }
@@ -301,14 +301,14 @@ namespace LastSpool.Repositories
                             Id = DbUtils.GetInt(reader, "Id"),
                             PrinterId = DbUtils.GetInt(reader, "PrinterId"),
                             Image = DbUtils.GetString(reader, "Image"),
-                            PercentDone = DbUtils.GetInt(reader, "PercentDone"),
+                            PercentDone = DbUtils.GetNullableInt(reader, "PercentDone"),
                             FileName = DbUtils.GetString(reader, "FileName"),
-                            TimeLeft = DbUtils.GetInt(reader, "TimeLeft"),
+                            TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
                             StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
-                            CompleteDateTime = DbUtils.GetDateTime(reader, "CompleteDateTime"),
+                            CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
 
                         };
                     }
