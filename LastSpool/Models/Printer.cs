@@ -16,5 +16,6 @@ namespace LastSpool.Models
         [MaxLength(50)]
         public string DeviceIdentifier { get; set; }
         public int UserProfileId { get; set; }
+        
     }
 }

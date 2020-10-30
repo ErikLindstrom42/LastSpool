@@ -56,6 +56,7 @@ namespace LastSpool.Controllers
         [HttpPost]
         public IActionResult Add(IncomingJob incomingJob)
         {
+            
             Job job = new Job()
             {
                 
@@ -66,25 +67,33 @@ namespace LastSpool.Controllers
                 PrintLength = (int)incomingJob.PrintLength,
                 DeviceIdentifier = incomingJob.DeviceIdentifier,
                 StatusMessage = incomingJob.StatusMessage,
-                CompleteDateTime = DateTime.Now
+                PercentDone = (int?)incomingJob.PercentDone,
+                TimeLeft = incomingJob.TimeLeft,
+
             };
-            try
+            Printer currentPrinter = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier);// add catch if not found
+            job.PrinterId = currentPrinter.Id;
+            Job lastJob = _jobRepository.GetLastPrinterJob(currentPrinter.Id);
+
+            if (job.PercentDone == 100)
             {
-                job.PercentDone = (int)incomingJob.PercentDone;
+                job.CompleteDateTime = DateTime.Now;
             }
-            catch
+            if (job.PercentDone > lastJob.PercentDone)
             {
-                job.PercentDone = 100;
+                job.Id = lastJob.Id;
+                _jobRepository.Update(job);
+                return Ok();
             }
-            job.TimeLeft = (incomingJob.TimeLeft == null) ? job.TimeLeft = 999 : job.TimeLeft = incomingJob.TimeLeft;
             
-            job.PrinterId = _printerRepository.GetPrinterByDeviceIdentifier(job.DeviceIdentifier).Id;// add catch if not found
-            _jobRepository.Add(job);
+                _jobRepository.Add(job);
             return base.Created("", job);
+            
         }
 
         private UserProfile GetCurrentUserProfile()
         {
+            
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
 
@@ -100,6 +109,32 @@ namespace LastSpool.Controllers
             }
             _jobRepository.Update(job);
             return Ok();
+        }
+
+   
+        [HttpGet("GetLastJob")]
+        public IActionResult GetLastJob()
+        {
+            
+            return Ok(_jobRepository.GetLastJob());
+
+        }
+
+
+        //[HttpGet("GetLastUserJob")]
+        //public IActionResult GetLastUserJob()
+        //{
+
+        //    return Ok(_jobRepository.GetLastUserJob(currentUser.Id));
+            
+        //}
+
+        [HttpGet("GetLastPrinterJob/{id}")]
+        public IActionResult GetLastPrinterJob(int id)
+        {
+
+            return Ok(_jobRepository.GetLastPrinterJob(id));
+
         }
     }
 }

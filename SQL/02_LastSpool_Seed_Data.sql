@@ -3,7 +3,7 @@ GO
 
 SET IDENTITY_INSERT [UserProfile] ON
 INSERT INTO [UserProfile] (id, name, email, firebaseUserId)
-VALUES (1, 'Erik', 'test@gmail.com', 'bMRKoGrZbYdrk8liei7a4ikju4o2');
+VALUES (1, 'Erik', 'test@gmail.com', 'bMRKoGrZbYdrk8liei7a4ikju4o2'), (2, 'tester', 'pyropro11@gmail.com', 'WNR9TspVh5Yk3LK48mFLgj5s3jv1');
 SET IDENTITY_INSERT [UserProfile] OFF
 
 SET IDENTITY_INSERT [Printer] ON
@@ -20,3 +20,4 @@ SET IDENTITY_INSERT [Note] ON
 INSERT INTO [Note] (id, content, createDateTime, jobId)
 VALUES (1,'yep, it worked', '2020-06-17', 1)
 SET IDENTITY_INSERT [Note] OFF
+
