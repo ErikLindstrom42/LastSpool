@@ -10,6 +10,7 @@ import {
   NavLink
 } from 'reactstrap';
 import { UserProfileContext } from "../providers/UserProfileProvider";
+import "./Header.css";
 
 export default function Header() {
   const { isLoggedIn, logout } = useContext(UserProfileContext);
@@ -18,16 +19,18 @@ export default function Header() {
 
   return (
     <div>
-      <Navbar color="dark" dark expand="md">
-        <NavbarBrand tag={RRNavLink} to="/">Grace Hopper Wisdom</NavbarBrand>
+      <Navbar color="custom" dark expand="lg" className="navbar-custom">
+        <NavbarBrand tag={RRNavLink} to="/">Last Spool</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
+          <NavItem>
+              <NavLink tag = {RRNavLink} to="/"> Printer List </NavLink>
+           
+
+                </NavItem>
             {isLoggedIn &&
               <>
-                <NavItem>
-                  <NavLink tag={RRNavLink} to="/add">Add Quote</NavLink>
-                </NavItem>
                 <NavItem>
                   <a aria-current="page" className="nav-link"
                     style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
@@ -46,11 +49,11 @@ export default function Header() {
             }
           </Nav>
           <Nav navbar>
-            <NavItem>
+            {/* <NavItem>
               <a aria-current="page" className="nav-link"
                 href="https://www.youtube.com/watch?v=3N_ywhx6_K0"
                 target="_new">Grace Hopper on Letterman</a>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </Collapse>
       </Navbar>

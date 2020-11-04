@@ -179,20 +179,31 @@ namespace LastSpool.Repositories
                 }
             }
         }
-        public void Delete(int id)
+        public void Delete(int jobId)
         {
             using (var conn = Connection)
             {
                 conn.Open();
+
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Job WHERE Id = @Id";
-                    DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.CommandText = "DELETE FROM Note WHERE jobId = @jobId";
+                    DbUtils.AddParameter(cmd, "@jobId", jobId);
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Job WHERE Id = @jobId";
+                    DbUtils.AddParameter(cmd, "@jobId", jobId);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="printerId"></param>
+        /// <returns>The last job for a given printer</returns>
         public Job GetLastPrinterJob(int printerId)
         {
             using (var conn = Connection)

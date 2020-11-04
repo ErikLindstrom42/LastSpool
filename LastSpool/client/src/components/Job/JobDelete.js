@@ -33,6 +33,7 @@ const JobDelete = () => {
                     <h3>Are you sure you want to delete this job?</h3>
                     <div>Content: {job.fileName}</div>             
                     <div>Completed on: {HumanPublishDate}</div>
+                    
                     <Button onClick={handleDelete} color="danger" className="jobButton">Delete</Button>
                     <Link to={`/printers/${printerId}/jobs/${jobId}/details`}>
                         <Button color="secondary" className="jobButton">Back</Button>

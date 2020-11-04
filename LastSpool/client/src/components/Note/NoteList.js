@@ -18,7 +18,6 @@ const NoteList = () => {
 
     return (
         <>
-            <p><Link to={`/printers/${printerId}/jobs/${jobId}/notes/new`}>New Note</Link></p>
 
             <div className="container">
                 <div className="row justify-content-center">

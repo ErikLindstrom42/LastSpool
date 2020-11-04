@@ -12,25 +12,60 @@ const JobEditForm = () => {
     const history = useHistory();
     const user = JSON.parse(sessionStorage.getItem("userProfile")).id
     const [image, setImage] = useState();
-    const [fileName, setFileName] = useState();
-    const [statusDateTime, setStatusDateTime] = useState();
-    const [completeDateTime, setCompleteDateTime] = useState();
-    const [deviceIdentifier, setDeviceIdentifier] = useState();
-    const [filamentLength, setFilamentLength] = useState();
+    let newImage = false;
+
+    // const [fileName, setFileName] = useState();
+    // const [statusDateTime, setStatusDateTime] = useState();
+    // const [completeDateTime, setCompleteDateTime] = useState();
+    // const [deviceIdentifier, setDeviceIdentifier] = useState();
+    // const [filamentLength, setFilamentLength] = useState();
+    const [loading, setLoading] = useState(false)
     const [job, setJob] = useState({
         id: "", printerId: "", deviceIdentifier: "", percentDone: 100, timeLeft: 0, statusMessage: "Your print is done.",
-        printLength: 0, completeDateTime: "", fileName: "", image: "", statusDateTime: "", filamentLength: ""
+        printLength: 0, completeDateTime: "", fileName: "", statusDateTime: "", filamentLength: ""
     });
 
     useEffect(() => {
         getJobById(jobId).then(setJob);
-    }, [])
-    console.log(job.filamentLength)
-    const handleFieldChange = evt => {
+    }, []);
 
+    //
+    // const showExistingImage = async e => {
+    //     setLoading(true);
+    //     const file = await job.image
+    //     setImage(file);
+    //     setLoading(false);
+    //     job.image = file;
+    // }
+    // //
+
+    const handleFieldChange = evt => {
         const stateToChange = { ...job }
-        stateToChange[evt.target.id] = evt.target.value
-        setJob(stateToChange)
+        stateToChange[evt.target.id] = evt.target.value;
+        setJob(stateToChange);
+    }
+    const uploadImage = async e => {
+        const files = e.target.files;
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('upload_preset', 'lastrollpre');
+        setLoading(true);
+        const res = await fetch(
+            '	https://api.cloudinary.com/v1_1/dfpncq7pk/image/upload',
+            {
+                method: 'POST',
+                body: data
+            }
+        );
+        const file = await res.json();
+        setImage(file.secure_url);
+        setLoading(false);
+        job.image = file.secure_url;
+        // let uploadedImage = file.secure_url;
+        console.log(job.image)
+        document.getElementById("id-image-to-edit").src=job.image;
+        
+
 
     }
 
@@ -54,9 +89,10 @@ const JobEditForm = () => {
 
     }
 
-    if (!job) return null;
+    if (!job) return null
     return (
         <div className="container pt-4">
+
             <div className="row justify-content-center">
                 <Card className="col-sm-12 col-lg-6">
                     <CardBody>
@@ -86,6 +122,19 @@ const JobEditForm = () => {
                                 <Label for="image">Image</Label>
                                 <Input id="image" defaultValue={job.image} onChange={handleFieldChange} />
                             </FormGroup>
+
+                            <FormGroup>
+                                <div className="cloudinaryUpload">
+                                    <h5>Upload Image</h5>
+                                    <input type="file"
+                                        name="file"
+                                        id="image"
+                                        placeholder="Upload an image"
+                                        onChange={uploadImage}
+                                    />
+                                    <img src={job.image} id="id-image-to-edit" style={{ width: '300px' }} alt="Cloudinary Upload" />
+                                </div>
+                            </FormGroup>
                             {/* <FormGroup>
                                 <Label for="deviceIdentifier">Device Identifier</Label>
                                 <Input id="deviceIdentifier" onChange={(e) => setFileName(e.target.value)} />
@@ -94,7 +143,7 @@ const JobEditForm = () => {
                         <Button color="info" onClick={submit} className="commentButton">
                             Submit
               </Button>
-                        <Link to={`/printers/${printerId}`}>
+                        <Link to={`/printers/${printerId}/jobs/${jobId}`}>
                             <Button color="secondary" className="commentButton">Back</Button>
                         </Link>
                     </CardBody>
