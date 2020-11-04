@@ -15,19 +15,18 @@ const JobList = () => {
 
     return (
         <>
-            {/* <p><Link to={`/printers/${printerId}/jobs/new`}>New Job</Link></p> */}
-
+            <p><Link to={`/printers/${printerId}/jobs/new`}>New Job</Link></p>
             <div className="container">
-                <div className="row justify-content-center">
-                    <div className="cards-column">
-                        {jobs.map((job) =>
-                            <Job key={job.id} job={job}
-                            />
 
-                        )}
-                    </div>
+                <div className="d-flex justify-content-center flex-wrap">
+                    {jobs.map((job) =>
+                        <Job key={job.id} job={job}
+                        />
+
+                    )}
                 </div>
-            </div>
+
+        </div>
         </>
     )
 }

@@ -4,46 +4,56 @@ import { useHistory, Link, useParams } from "react-router-dom"
 import { Button, Card, CardBody } from "reactstrap";
 import { JobContext } from "../../providers/JobProvider"
 import NoteList from "../Note/NoteList";
+import DayJS from 'react-dayjs';
 
 
 const JobDetails = () => {
-
+    
     const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
     const { printerId, jobId } = useParams();
-
-    const { getJobById, job } = useContext(JobContext)
+    
+    const { getJobById } = useContext(JobContext)
+    const [job, setJob] = useState();
     
     useEffect(() => {
-        getJobById(jobId);
+        getJobById(jobId).then(setJob);
     }, []);
+    
+    if (!job) return null
+    let minutesLeft = Math.floor(job.timeLeft / 60)
 
-    if(job.printer=== undefined) return null;
 
     return (
     <>
-        <Card style={{ border: "none" }}>
+        <Card>
             <div className="jobCard">
-                <CardBody>
+                <CardBody className=" d-flex flex-column align-items-center">
+                    <div><img src={job.image} alt="job image" className="detailsImage"/></div>
                     <strong>{job.fileName}</strong>
-                    <div>{job.filamentLength}</div>
-                    <img src={job.image} alt="job image" />
+                    
+
                     <div>{job.name}</div>
-                    {/* <p><Link to={`/printers/${printerId}/jobs/${job.id}`}>More</Link></p> */}
-                    <p><Link to={`/printers/${printerId}`}>
+                    {(job.percentDone==100) ? <div className="mb-3">Completed on: <DayJS format="MMM, D h:mm A">{job.completeDateTime}</DayJS></div> : <div>{job.percentDone}% complete</div>}
+                    <div>Total filament use: {Math.round(job.filamentLength/1000)} meters</div>
+                    {(job.percentDone!=100) ? <div className="mb-3">Estimated {minutesLeft} minutes left</div>:null}
+                    <div className="d-flex justify-content">
+
+                    <Link to={`/printers/${printerId}`}>
                         <Button>Back</Button>
-                    </Link></p>
+                    </Link>
 
                     {(currentUserId === job.printer.userProfileId) && (jobId) ?
                         <Link to={`/printers/${printerId}/jobs/${job.id}/delete`}>
-                            <Button color="danger" className="jobButton">Delete</Button>
+                            <Button color="danger" className="jobButton ml-2 ">Delete</Button>
                         </Link>
                         : <div></div>}
 
                     {(currentUserId === job.printer.userProfileId) ?
                         <Link to={`/printers/${printerId}/jobs/${job.id}/edit`}>
-                            <Button className="jobButton">Edit</Button>
+                            <Button className="jobButton ml-2">Edit</Button>
                         </Link>
                         : <div></div>}
+                        </div>
                 </CardBody>
             </div>
         </Card>

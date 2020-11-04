@@ -16,7 +16,7 @@ const Printer = ({ printer }) => {
 
 
     return (
-        <Card style={{ border: "none" }}>
+        <Card >
         <div className="printerCard">
             <CardBody>
                 <div>{printer.name} </div>

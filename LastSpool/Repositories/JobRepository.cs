@@ -21,7 +21,7 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
+                        SELECT j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusDateTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
                                 p.Name AS PrinterName, p.DeviceIdentifier, p.Description, p.UserProfileId
                         FROM Job j
                         LEFT JOIN Printer p ON j.PrinterId = p.Id
@@ -43,7 +43,7 @@ namespace LastSpool.Repositories
                             TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
-                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
+                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusDateTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
                             CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
                             Printer = new Printer()
@@ -69,7 +69,7 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
+                        SELECT j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusDateTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
                                 p.Name AS PrinterName, p.DeviceIdentifier, p.Description, p.UserProfileId
                         FROM Job j
                         LEFT JOIN Printer p ON j.PrinterId = p.Id
@@ -90,8 +90,9 @@ namespace LastSpool.Repositories
                             FileName = DbUtils.GetString(reader, "FileName"),
                             TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
+                            DeviceIdentifier = DbUtils.GetString(reader, "DeviceIdentifier"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
-                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
+                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusDateTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
                             CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
                             Printer = new Printer()
@@ -121,15 +122,15 @@ namespace LastSpool.Repositories
                 {
                     cmd.CommandText = @"
                         INSERT INTO Job
-                       (printerId, [Image], percentDone, fileName, timeLeft, statusTime, printLength, filamentLength, statusMessage, deviceIdentifier, completeDateTime)
+                       (printerId, [Image], percentDone, fileName, timeLeft, statusDateTime, printLength, filamentLength, statusMessage, deviceIdentifier, completeDateTime)
                         OUTPUT INSERTED.id
-                        VALUES (@PrinterId, @Image, @PercentDone, @FileName, @TimeLeft, @StatusTime, @PrintLength, @FilamentLength, @StatusMessage, @DeviceIdentifier, @CompleteDateTime)";
+                        VALUES (@PrinterId, @Image, @PercentDone, @FileName, @TimeLeft, @StatusDateTime, @PrintLength, @FilamentLength, @StatusMessage, @DeviceIdentifier, @CompleteDateTime)";
                     DbUtils.AddParameter(cmd, "@PrinterId", job.PrinterId);
                     DbUtils.AddParameter(cmd, "@Image", job.Image);
                     DbUtils.AddParameter(cmd, "@PercentDone", job.PercentDone);
                     DbUtils.AddParameter(cmd, "@FileName", job.FileName);
                     DbUtils.AddParameter(cmd, "@TimeLeft", job.TimeLeft);
-                    DbUtils.AddParameter(cmd, "@StatusTime", job.StatusDateTime);
+                    DbUtils.AddParameter(cmd, "@StatusDateTime", job.StatusDateTime);
                     DbUtils.AddParameter(cmd, "@PrintLength", job.PrintLength);
                     DbUtils.AddParameter(cmd, "@FilamentLength", job.FilamentLength);
                     DbUtils.AddParameter(cmd, "@StatusMessage", job.StatusMessage);
@@ -155,7 +156,7 @@ namespace LastSpool.Repositories
                             PercentDone = @PercentDone,
                             FileName = @FileName,
                             TimeLeft = @TimeLeft,
-                            StatusTime = @StatusTime,
+                            StatusDateTime = @StatusDateTime,
                             CompleteDateTime = @CompleteDateTime,
                             PrintLength = @PrintLength,
                             FilamentLength = @FilamentLength,
@@ -166,7 +167,7 @@ namespace LastSpool.Repositories
                     DbUtils.AddParameter(cmd, "@PercentDone", job.PercentDone);
                     DbUtils.AddParameter(cmd, "@FileName", job.FileName);
                     DbUtils.AddParameter(cmd, "@TimeLeft", job.TimeLeft);
-                    DbUtils.AddParameter(cmd, "@StatusTime", job.StatusDateTime);
+                    DbUtils.AddParameter(cmd, "@StatusDateTime", job.StatusDateTime);
                     DbUtils.AddParameter(cmd, "@CompleteDateTime", job.CompleteDateTime);
                     DbUtils.AddParameter(cmd, "@PrintLength", job.PrintLength);
                     DbUtils.AddParameter(cmd, "@FilamentLength", job.FilamentLength);
@@ -178,20 +179,31 @@ namespace LastSpool.Repositories
                 }
             }
         }
-        public void Delete(int id)
+        public void Delete(int jobId)
         {
             using (var conn = Connection)
             {
                 conn.Open();
+
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Job WHERE Id = @Id";
-                    DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.CommandText = "DELETE FROM Note WHERE jobId = @jobId";
+                    DbUtils.AddParameter(cmd, "@jobId", jobId);
+                    cmd.ExecuteNonQuery();
+                }
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Job WHERE Id = @jobId";
+                    DbUtils.AddParameter(cmd, "@jobId", jobId);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="printerId"></param>
+        /// <returns>The last job for a given printer</returns>
         public Job GetLastPrinterJob(int printerId)
         {
             using (var conn = Connection)
@@ -200,13 +212,13 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT TOP 1 j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
+                        SELECT TOP 1 j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusDateTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
                         p.Name AS PrinterName, p.DeviceIdentifier, p.Description, p.UserProfileId
                         FROM Job j 
                         LEFT JOIN Printer p ON j.PrinterId = p.Id
                         LEFT JOIN UserProfile up ON p.userProfileId = up.Id
                         WHERE p.Id = @printerId
-                        ORDER BY statusTime DESC";
+                        ORDER BY statusDateTime DESC";
                     DbUtils.AddParameter(cmd, "@printerId", printerId);
                     var reader = cmd.ExecuteReader();
 
@@ -223,7 +235,7 @@ namespace LastSpool.Repositories
                             TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
-                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
+                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusDateTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
                             CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime")
 
@@ -242,13 +254,13 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT TOP 1 j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
+                        SELECT TOP 1 j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusDateTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
                         p.Name AS PrinterName, p.DeviceIdentifier, p.Description, p.UserProfileId
                         FROM Job j 
                         LEFT JOIN Printer p ON j.PrinterId = p.Id
                         LEFT JOIN UserProfile up ON p.userProfileId = up.Id
                         WHERE up.Id = @userId
-                        ORDER BY statusTime DESC";
+                        ORDER BY statusDateTime DESC";
                     DbUtils.AddParameter(cmd, "@userId", userId);
                     var reader = cmd.ExecuteReader();
 
@@ -265,7 +277,7 @@ namespace LastSpool.Repositories
                             TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
-                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
+                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusDateTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
                             CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
 
@@ -284,12 +296,12 @@ namespace LastSpool.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT TOP 1 j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
+                        SELECT TOP 1 j.Id, j.PrinterId, j.Image, j.PercentDone, j.FileName, j.TimeLeft, j.StatusDateTime, j.StatusMessage, j.CompleteDateTime, j.PrintLength, j.FilamentLength,
                         p.Name AS PrinterName, p.DeviceIdentifier, p.Description, p.UserProfileId
                         FROM Job j 
                         LEFT JOIN Printer p ON j.PrinterId = p.Id
                         LEFT JOIN UserProfile up ON p.userProfileId = up.Id
-                        ORDER BY statusTime DESC";
+                        ORDER BY statusDateTime DESC";
 
                     var reader = cmd.ExecuteReader();
 
@@ -306,7 +318,7 @@ namespace LastSpool.Repositories
                             TimeLeft = DbUtils.GetNullableInt(reader, "TimeLeft"),
                             PrintLength = DbUtils.GetInt(reader, "PrintLength"),
                             FilamentLength = DbUtils.GetInt(reader, "FilamentLength"),
-                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusTime"),
+                            StatusDateTime = DbUtils.GetDateTime(reader, "StatusDateTime"),
                             StatusMessage = DbUtils.GetString(reader, "StatusMessage"),
                             CompleteDateTime = DbUtils.GetNullableDateTime(reader, "CompleteDateTime"),
 

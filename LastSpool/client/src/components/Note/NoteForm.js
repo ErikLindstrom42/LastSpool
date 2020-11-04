@@ -24,18 +24,20 @@ const NoteForm = () => {
         const HumanPublishDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
         newNote.createDateTime = date;
         newNote.jobId = parseInt(jobId);
+        document.getElementById("myForm").reset();
 
-        addNote(newNote).then((evt) => {getNotesByJobId(jobId)
-            
+        addNote(newNote).then((evt) => {
+            getNotesByJobId(jobId)
+
         });
     };
 
     return (
         <div className="container pt-4">
             <div className="row justify-content-center">
-                <Card className="col-sm-12 col-lg-6">
+                <Card className="col-sm-12 col-lg-6" >
                     <CardBody>
-                        <Form>
+                        <Form id="myForm">
                             <FormGroup>
                                 <Input type="hidden"
                                     id="jobId"
