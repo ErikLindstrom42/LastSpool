@@ -64,7 +64,7 @@ namespace LastSpool.Controllers
             return Ok();
         }
 
-        [HttpPost]
+       [HttpPost]
         public IActionResult Add(Note note)
         {
             

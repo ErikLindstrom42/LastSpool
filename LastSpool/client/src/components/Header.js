@@ -24,11 +24,13 @@ export default function Header() {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-          <NavItem>
-              <NavLink tag = {RRNavLink} to="/"> Printer List </NavLink>
-           
-
+            {isLoggedIn &&
+              <>
+                <NavItem>
+                  <NavLink tag={RRNavLink} to="/"> Printer List </NavLink>
                 </NavItem>
+              </>
+            }
             {isLoggedIn &&
               <>
                 <NavItem>

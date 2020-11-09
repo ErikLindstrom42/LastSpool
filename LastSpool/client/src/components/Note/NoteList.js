@@ -1,14 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { NoteContext } from "../../providers/NoteProvider";
 import Note from "./Note";
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import NoteForm from "./NoteForm";
 
 
 
 const NoteList = () => {
     const { notes, getNotesByJobId } = useContext(NoteContext);
-    const { printerId, jobId } = useParams();
+    const {jobId } = useParams();
 
     useEffect(() => {
         getNotesByJobId(jobId);

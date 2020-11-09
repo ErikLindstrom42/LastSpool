@@ -1,17 +1,13 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect } from "react";
 import { PrinterContext } from "../../providers/PrinterProvider";
 import { useHistory, Link } from "react-router-dom";
 import Printer from "./Printer"
 
-
-import {
-    Button, Table
-} from "reactstrap";
 import "./Printer.css"
 
 const PrinterList = () => {
     const { printers, getPrintersByUserProfileId } = useContext(PrinterContext);
-    const history = useHistory();
+    
     const userId = JSON.parse(sessionStorage.getItem("userProfile")).id
     useEffect(() => {
         getPrintersByUserProfileId(userId);

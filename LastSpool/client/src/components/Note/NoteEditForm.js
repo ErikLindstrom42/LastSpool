@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
-import { useHistory, useParams, Link } from "react-router-dom"
+import { useHistory, useParams } from "react-router-dom"
 import { NoteContext } from "../../providers/NoteProvider";
 import "./Note.css"
 
@@ -8,10 +8,9 @@ import "./Note.css"
 const NoteForm = () => {
 
     const { editNote, getNoteById } = useContext(NoteContext);
-    const user = JSON.parse(sessionStorage.getItem("userProfile")).id
+    
 
     const [content, setContent] = useState("");
-    const [createDateTime, setCreateDateTime] = useState("");
     const { jobId, noteId, printerId } = useParams();
     const [note, setNote] =useState({id:"", jobId:"", content:"", createDateTime:""})
     const history = useHistory();
@@ -36,7 +35,7 @@ const NoteForm = () => {
             createDateTime:note.createDateTime
         };
         const date = new Date();
-        const HumanPublishDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+        
         
         
         editedNote.content = note.content;

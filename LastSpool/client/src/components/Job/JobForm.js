@@ -1,39 +1,27 @@
 import "./Job.css"
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory, Link, useParams } from "react-router-dom"
 import { Button, Card, CardBody, Form, FormGroup, Label, Input } from "reactstrap";
 import { JobContext } from "../../providers/JobProvider";
 
 const JobForm = () => {
 
-    const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
-    const { printerId, jobId } = useParams();
+    
+    const { printerId } = useParams();
     const { addJob } = useContext(JobContext);
     const history = useHistory();
 
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState();
-    const [fileName, setFileName] = useState();
-    const [statusDateTime, setStatusDateTime] = useState();
-    const [completeDateTime, setCompleteDateTime] = useState();
-    const [deviceIdentifier, setDeviceIdentifier] = useState();
-    const [filamentLength, setFilamentLength] = useState();
     const [job, setJob] = useState({
         printerId: "", deviceIdentifier: "", percentDone: 100, timeLeft: 0, statusMessage: "Your print is done.",
         printLength: 0, completeDateTime: "", fileName: "", image: "", statusDateTime: "", filamentLength: ""
     });
 
-    // let widget = window.cloudinary.createUploadWidget({
-    //     cloudName: "dfpncq7pk",
-    //     uploadPreset: "lastrollpre" },
-    //     (error, result) => {})
-    // const showWidget = 
     const checkUploadResult = (resultEvent) => {
         if (resultEvent.event === 'success') {
 
             job.image = resultEvent.info.secure_url
-            //setImageName(resultEvent.info.original_filename + `.${resultEvent.info.format}`)
-
         }
     }
 
@@ -58,19 +46,6 @@ const JobForm = () => {
         setLoading(false)
         job.image = file.secure_url
     }
-
-
-    const showWidget = (event) => {
-        let widget = window.cloudinary.createUploadWidget({
-            cloudName: "dfpncq7pk",
-            uploadPreset: "lastrollpre"
-        },
-            (error, result) => { checkUploadResult(result) })
-
-        widget.open()
-    }
-
-
 
     const handleFieldChange = evt => {
 

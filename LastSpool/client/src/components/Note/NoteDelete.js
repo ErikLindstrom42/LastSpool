@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import {useHistory, useParams, Link} from 'react-router-dom';
 import { NoteContext } from "../../providers/NoteProvider";
-import { Button, Card, CardBody } from "reactstrap";
+import { Button} from "reactstrap";
 import "./Note.css"
 
 
@@ -15,7 +15,7 @@ const NoteDelete = () => {
     useEffect(() => {
         getNoteById(noteId).then(setNote);
     }, []);
-    const currentUser = JSON.parse(sessionStorage.getItem('userProfile')).id;
+    
 
     const handleDelete = (id) => {
         deleteNote(note.id)

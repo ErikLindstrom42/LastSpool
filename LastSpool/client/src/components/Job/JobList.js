@@ -16,7 +16,7 @@ const JobList = () => {
     return (
         <>
             <p><Link to={`/printers/${printerId}/jobs/new`}>New Job</Link></p>
-            <div className="container">
+            
 
                 <div className="d-flex justify-content-center flex-wrap">
                     {jobs.map((job) =>
@@ -26,7 +26,7 @@ const JobList = () => {
                     )}
                 </div>
 
-        </div>
+        
         </>
     )
 }

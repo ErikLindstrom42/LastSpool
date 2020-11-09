@@ -1,46 +1,24 @@
 import "./Printer.css"
-import React, { useContext, useState, useEffect } from "react";
-import { useHistory, Link, useParams } from "react-router-dom"
-import {Button, Card, CardBody} from "reactstrap";
-import { JobContext } from "../../providers/JobProvider";
+import React from "react";
+import {Link} from "react-router-dom"
+import {Card, CardBody, Button} from "reactstrap";
+
 const Printer = ({ printer }) => {
-
-    const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
-    const {printerId} = useParams();
-    //    const [job, setJob] = useState();    
-    // const { getLastJobByPrinterId, job } = useContext(JobContext);
-    // useState(() => {
-    //     getLastJobByPrinterId(printer.id);
-
-    // }, []);
 
 
     return (
-        <Card >
+        <Card className="mb-3">
         <div className="printerCard">
             <CardBody>
                 <div>{printer.name} </div>
                 {/* <div>Status: {job.percentDone}</div> */}
                 <div>{printer.deviceIdentifier}</div>
 
-                
-                
                 <div className="printerTextArea">{printer.description}</div>
-                <p><Link to={`printers/${printer.id}/`}>More</Link></p>
-
-                {/* <div>
-                    {(currentUserId === printer.userProfileId) ?
-                        <Link to={`/posts/${postId}/printers/${printer.id}/delete`}>
-                            <Button color="danger" className="printerButton">Delete</Button>
+                {/* <Button><Link to={`printers/${printer.id}/`}>More</Link></Button> */}
+                <Link to={`/printers/${printer.id}`}>
+                            <Button className="jobButton ml-2">More</Button>
                         </Link>
-                        : <div></div>}
-
-                    {(currentUser === printer.userProfileId) ?
-                        <Link to={`/posts/${postId}/printers/${printer.id}/edit`}>
-                            <Button className="printerButton">Edit</Button>
-                        </Link>
-                        : <div></div>}
-                </div> */}
             </CardBody>
         </div>
     </Card>

@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
-import { useHistory, useParams, Link } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import { PrinterContext } from "../../providers/PrinterProvider";
 import "./Printer.css"
 
@@ -9,7 +9,7 @@ const PrinterForm = () => {
 
     const { addPrinter } = useContext(PrinterContext);
     const user = JSON.parse(sessionStorage.getItem("userProfile")).id
-    const { printers, getPrintersByUserProfileId } = useContext(PrinterContext);
+    
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [deviceIdentifier, setDeviceIdentifier] = useState("");
@@ -24,20 +24,11 @@ const PrinterForm = () => {
         };
         printer.userProfileId = user
 
-        // const date = new Date();
-        // const HumanPublishDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-        // comment.createDateTime = HumanPublishDate
-        
+
         addPrinter(printer).then((evt) => {
             history.push(`/`);
         });
     };
-    // useEffect(() => {
-    //     getPrintersByUserProfileId(user)
-    // },[])
-    // let printerList = printers.map((printer) =>
-    //     <option key={printer.id} value={printer.id}>printer{printer.id}</option> )
-
 
     return (
         <div className="container pt-4">
@@ -45,13 +36,7 @@ const PrinterForm = () => {
                 <Card className="col-sm-12 col-lg-6">
                     <CardBody>
                         <Form>
-                            {/* <FormGroup>
-                                <Label for="userId">User Id (For Now...)</Label>
-                                <Input
-                                    id="userId"
-                                    onChange={(e) => setUserProfileId(e.target.value)}
-                                />
-                            </FormGroup> */}
+
                             <FormGroup>
                                 <Label for="userProfileId">New Printer</Label>
                                 <Input type="hidden"

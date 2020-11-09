@@ -25,16 +25,16 @@ const JobDetails = () => {
 
     return (
     <>
-        <Card>
-            <div className="jobCard">
+        <Card className="d-flex align-items-center w">
+            <div className="jobCard d-flex align-items-center">
                 <CardBody className=" d-flex flex-column align-items-center">
-                    <div><img src={job.image} alt="job image" className="detailsImage"/></div>
+                    <div><img src={job.image} alt="job image" className="jobDetailImage"/></div>
                     <strong>{job.fileName}</strong>
                     
 
                     <div>{job.name}</div>
-                    {(job.percentDone==100) ? <div className="mb-3">Completed on: <DayJS format="MMM, D h:mm A">{job.completeDateTime}</DayJS></div> : <div>{job.percentDone}% complete</div>}
                     <div>Total filament use: {Math.round(job.filamentLength/1000)} meters</div>
+                    {(job.percentDone==100) ? <div className="mb-3">Completed on: <DayJS format="MMM, D h:mm A">{job.completeDateTime}</DayJS></div> : <div>{job.percentDone}% complete</div>}
                     {(job.percentDone!=100) ? <div className="mb-3">Estimated {minutesLeft} minutes left</div>:null}
                     <div className="d-flex justify-content">
 
@@ -55,7 +55,7 @@ const JobDetails = () => {
                         : <div></div>}
                         </div>
                 </CardBody>
-            </div>
+                </div>
         </Card>
         <NoteList />
         </>

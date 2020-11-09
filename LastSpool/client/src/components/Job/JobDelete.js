@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import {useHistory, useParams, Link} from 'react-router-dom';
 import { JobContext } from "../../providers/JobProvider";
-import { Button, Card, CardBody } from "reactstrap";
+import { Button } from "reactstrap";
 import "./Job.css"
 
 
@@ -15,7 +15,6 @@ const JobDelete = () => {
     useEffect(() => {
         getJobById(jobId).then(setJob);
     }, []);
-    const currentUser = JSON.parse(sessionStorage.getItem('userProfile')).id;
 
     const handleDelete = (id) => {
         deleteJob(job.id)
@@ -31,7 +30,7 @@ const JobDelete = () => {
             <div className="row justify-content-center">
                 <div className="col-sm-12 col-lg-6">
                     <h3>Are you sure you want to delete this job?</h3>
-                    <div>Content: {job.fileName}</div>             
+                    <div>Job Name: {job.fileName}</div>             
                     <div>Completed on: {HumanPublishDate}</div>
                     
                     <Button onClick={handleDelete} color="danger" className="jobButton">Delete</Button>
