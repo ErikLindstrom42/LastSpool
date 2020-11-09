@@ -1,6 +1,6 @@
 import "./Note.css"
-import React, { useContext, useState } from "react";
-import { useHistory, Link, useParams } from "react-router-dom"
+import React from "react";
+import { Link, useParams } from "react-router-dom"
 import { Button, Card, CardBody } from "reactstrap";
 import DayJS from 'react-dayjs';
 
@@ -8,12 +8,8 @@ import DayJS from 'react-dayjs';
 const Note = ({ note }) => {
 
     const currentUserId = JSON.parse(sessionStorage.getItem('userProfile')).id
-    const { printerId, noteId, postId, jobId } = useParams();
+    const { printerId, jobId } = useParams();
 
-
-let date = new Date(note.createDateTime)
-const HumanPublishDate = `${date.getHours()}:${date.getMinutes()+1}GMT ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
-//console.log(tempDate.getMonth())
     return (
         <Card>
                 <CardBody className="col-lg">
