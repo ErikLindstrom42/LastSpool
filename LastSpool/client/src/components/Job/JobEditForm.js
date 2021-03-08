@@ -63,8 +63,8 @@ const JobEditForm = () => {
         job.image = file.secure_url;
         // let uploadedImage = file.secure_url;
         console.log(job.image)
-        document.getElementById("id-image-to-edit").src=job.image;
-        
+        document.getElementById("id-image-to-edit").src = job.image;
+
 
 
     }
