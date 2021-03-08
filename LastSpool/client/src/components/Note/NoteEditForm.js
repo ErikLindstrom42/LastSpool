@@ -8,18 +8,18 @@ import "./Note.css"
 const NoteForm = () => {
 
     const { editNote, getNoteById } = useContext(NoteContext);
-    
+
 
     const [content, setContent] = useState("");
     const { jobId, noteId, printerId } = useParams();
-    const [note, setNote] =useState({id:"", jobId:"", content:"", createDateTime:""})
+    const [note, setNote] = useState({ id: "", jobId: "", content: "", createDateTime: "" })
     const history = useHistory();
 
 
     useEffect(() => {
         getNoteById(noteId).then(setNote)
 
-    },[]);
+    }, []);
     const handleFieldChange = evt => {
         const stateToChange = { ...note }
         stateToChange[evt.target.id] = evt.target.value;
@@ -29,15 +29,12 @@ const NoteForm = () => {
     const submit = (evt) => {
         evt.preventDefault();
         const editedNote = {
-            id:note.id,
-            jobId:note.jobId,
+            id: note.id,
+            jobId: note.jobId,
             content,
-            createDateTime:note.createDateTime
+            createDateTime: note.createDateTime
         };
         const date = new Date();
-        
-        
-        
         editedNote.content = note.content;
 
         editNote(editedNote).then((evt) => history.push(`/printers/${printerId}/jobs/${jobId}/details`))
@@ -66,7 +63,7 @@ const NoteForm = () => {
                                     id="content"
                                     defaultValue={note.content}
                                     onChange={handleFieldChange}
-                                    
+
                                 />
                             </FormGroup>
 
