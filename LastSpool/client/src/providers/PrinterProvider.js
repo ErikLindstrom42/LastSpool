@@ -47,4 +47,3 @@ export const PrinterProvider = (props) => {
     );
 }
 
-//, deletePrinter, editPrinter, getPrinterById
