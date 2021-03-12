@@ -78,15 +78,6 @@ export const JobProvider = (props) => {
                     "Content-Type": "application/json"
                 }
             }));
-    // const getJobById = (id) =>
-    //     getToken().then((token) =>
-    //         fetch(`${apiUrl}/${id}`, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`
-
-    //             }
-    //         }).then((res) => res.json()));
-
 
 
 
@@ -97,4 +88,3 @@ export const JobProvider = (props) => {
     );
 }
 
-//, getJobById

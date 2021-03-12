@@ -75,4 +75,3 @@ export const NoteProvider = (props) => {
     );
 }
 
-//, deleteNote, editNote, getNoteById
